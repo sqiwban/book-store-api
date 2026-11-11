@@ -21,7 +21,7 @@ async def test_create_order_unauthorized(client: AsyncClient, test_book):
         "/orders",
         json={"book_id": test_book.id, "quantity": 1},
     )
-    assert response.status_code == 401
+    assert response.status_code == 403
 
 
 @pytest.mark.asyncio

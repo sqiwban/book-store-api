@@ -58,7 +58,7 @@ async def test_create_author_unauthorized(client: AsyncClient):
             "birth_date": "1980-01-01",
         },
     )
-    assert response.status_code == 401
+    assert response.status_code == 403
 
 
 @pytest.mark.asyncio
