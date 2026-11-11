@@ -9,6 +9,10 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    secret_key: str
+    algorithm: str = "HS256"
+    access_token_expire_minutes: int = 30
+
     postgres_user: str
     postgres_password: str
     postgres_db: str
