@@ -1,6 +1,8 @@
-from datetime import date
+from datetime import date, datetime
 
-from pydantic import BaseModel, Field, field_validator, EmailStr
+from pydantic import BaseModel, Field, field_validator, EmailStr, ConfigDict
+
+from app.models import UserRole
 
 
 class AuthorBase(BaseModel):
@@ -44,3 +46,66 @@ class UserCreate(BaseModel):
 class OrderCreate(BaseModel):
     book_id: int
     quantity: int = Field(..., gt=0)
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+class UserResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    username: str
+    email: str
+    role: UserRole
+
+class AuthorResponse(AuthorBase):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+
+class BookListResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    title: str
+    description: str
+    price: int
+    stock_quantity: int
+    author_id: int
+    created_at: datetime
+
+class AuthorWithBooksResponse(AuthorResponse):
+    books: list[BookListResponse] = []
+
+class BookResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    title: str
+    description: str
+    price: int
+    stock_quantity: int
+    author_id: int
+    created_at: datetime
+    author: AuthorResponse
+
+class PaginatedBooks(BaseModel):
+    items: list[BookResponse]
+    total: int
+    limit: int
+    offset: int
+
+class OrderResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    user_id: int
+    book_id: int
+    quantity: int
+    total_price: int
+    created_at: datetime
