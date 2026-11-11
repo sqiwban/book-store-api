@@ -1,7 +1,7 @@
 import enum
 from datetime import date, datetime, timezone
 
-from sqlalchemy import ForeignKey, Index, String, Text
+from sqlalchemy import ForeignKey, Index, String, Text, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database import Base
@@ -29,7 +29,10 @@ class Book(Base):
     price: Mapped[int]
     stock_quantity: Mapped[int] = mapped_column(default=0)
     author_id: Mapped[int] = mapped_column(ForeignKey("authors.id"))
-    created_at: Mapped[datetime] = mapped_column(default=datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=datetime.now(timezone.utc)
+    )
 
     author: Mapped["Author"] = relationship(back_populates="books", lazy="joined")
 
@@ -55,7 +58,10 @@ class Order(Base):
     book_id: Mapped[int] = mapped_column(ForeignKey("books.id"))
     quantity: Mapped[int]
     total_price: Mapped[int]
-    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime(timezone=True),
+        default=lambda: datetime.now(timezone.utc)
+    )
 
     user: Mapped["User"] = relationship(back_populates="orders", lazy="joined")
     book: Mapped["Book"] = relationship(lazy="joined")
