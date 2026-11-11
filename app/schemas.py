@@ -99,3 +99,13 @@ class PaginatedBooks(BaseModel):
     total: int
     limit: int
     offset: int
+
+class OrderResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    user_id: int
+    book_id: int
+    quantity: int
+    total_price: int
+    created_at: datetime
