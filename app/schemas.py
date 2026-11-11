@@ -1,6 +1,7 @@
 from datetime import date
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, EmailStr
+
 
 class AuthorBase(BaseModel):
     name: str = Field(..., min_length=1, max_length=255)
@@ -34,3 +35,12 @@ class BookUpdate(BaseModel):
     description: str | None = None
     price: int | None = Field(default=None, ge=0)
     stock_quantity: int | None = Field(default=None, ge=0)
+
+class UserCreate(BaseModel):
+    username: str = Field(..., min_length=3, max_length=100)
+    email: EmailStr
+    password: str = Field(..., min_length=6)
+
+class OrderCreate(BaseModel):
+    book_id: int
+    quantity: int = Field(..., gt=0)
