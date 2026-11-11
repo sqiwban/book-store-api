@@ -55,7 +55,7 @@ class Order(Base):
     book_id: Mapped[int] = mapped_column(ForeignKey("books.id"))
     quantity: Mapped[int]
     total_price: Mapped[int]
-    created_at: Mapped[datetime] = mapped_column(default=datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(default=lambda: datetime.now(timezone.utc))
 
     user: Mapped["User"] = relationship(back_populates="orders", lazy="joined")
     book: Mapped["Book"] = relationship(lazy="joined")
