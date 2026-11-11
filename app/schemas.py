@@ -81,3 +81,21 @@ class BookListResponse(BaseModel):
 
 class AuthorWithBooksResponse(AuthorResponse):
     books: list[BookListResponse] = []
+
+class BookResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    title: str
+    description: str
+    price: int
+    stock_quantity: int
+    author_id: int
+    created_at: datetime
+    author: AuthorResponse
+
+class PaginatedBooks(BaseModel):
+    items: list[BookResponse]
+    total: int
+    limit: int
+    offset: int
