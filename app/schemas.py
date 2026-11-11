@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 
 from pydantic import BaseModel, Field, field_validator, EmailStr, ConfigDict
 
@@ -62,3 +62,22 @@ class UserResponse(BaseModel):
     username: str
     email: str
     role: UserRole
+
+class AuthorResponse(AuthorBase):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+
+class BookListResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    title: str
+    description: str
+    price: int
+    stock_quantity: int
+    author_id: int
+    created_at: datetime
+
+class AuthorWithBooksResponse(AuthorResponse):
+    books: list[BookListResponse] = []
