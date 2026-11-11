@@ -1,6 +1,8 @@
 from datetime import date
 
-from pydantic import BaseModel, Field, field_validator, EmailStr
+from pydantic import BaseModel, Field, field_validator, EmailStr, ConfigDict
+
+from app.models import UserRole
 
 
 class AuthorBase(BaseModel):
@@ -44,3 +46,19 @@ class UserCreate(BaseModel):
 class OrderCreate(BaseModel):
     book_id: int
     quantity: int = Field(..., gt=0)
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+class UserResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    username: str
+    email: str
+    role: UserRole
